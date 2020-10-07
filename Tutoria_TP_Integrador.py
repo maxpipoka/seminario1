@@ -66,9 +66,9 @@ class Dispositivos:
         return self.estado
 
 def altaDispositivo(datos): #Para el alta de un nuevo dispositivo
-    borrarPantalla()
     carga = 'S'
     while (carga == 'S'):
+        borrarPantalla()
         print(f'// Alta de nuevo dispositivo----------')
         iddT = int(input(f'Ingrese el ID: #'))
         descT = input(f'Ingrese la descripcion: ')
@@ -95,17 +95,16 @@ def listarDispositivos(datos):
     print(f'/// Listado de dispositivos registrados----------')
     for nDispositivo in datos:
         print(f'#{i}: Id Disp.: #{nDispositivo.getId()} - Descr.: {nDispositivo.getDescripcion()} - Zona: {nDispositivo.getZonaDespliegue()} - Ub: {nDispositivo.getUbicacion()} - Estado: {nDispositivo.getEstado()}')
+        i += 1
     print(f'')
     print(f'')
 
 def actualizarDispositivo(datos):
     listarDispositivos(datos)
-    print(f'')
-    print(f'')
     print(f'/// Modificacion de dispositivo registrado----------')
     aModificar = int(input(f'/// Seleccione el dispositivo a modificar: #'))
     temporal = datos[aModificar]
-    iddT = temporal.getID()
+    iddT = temporal.getId()
     print(f'/ Dispositivo ID: {temporal.getId()}')
     descT = input(f'/ Ingrese la nueva descripcion: ')
     zonaDesT = input(f'Ingrese la nueva zona de despliegue: ')
@@ -116,22 +115,31 @@ def actualizarDispositivo(datos):
     ubicacionT = F'{latT},{longT}'
     nDispositivo = Dispositivos(idd=iddT, descripcion=descT, zonaDespliegue=zonaDesT, ubicacion=ubicacionT, valorHumedad='', estado=estadoT)
     datos[aModificar] = nDispositivo
+    listarDispositivos(datos)
     print(f'')
     print(f'')
     return datos
+
+def eliminarDispositivo(datos):
+    listarDispositivos(datos)
+    print(f'/// Borrado de dispositivo registrado----------')
+    aEliminar = int(input(f'/// Seleccione el dispositivo a eliminar: #'))
+    nDispositivo = datos[aEliminar]
+    confirmacion = input(f'--ATENCION! ESTA SEGURO DE BORRAR EL DISPOSITIVO #{aEliminar}? S/N ')
+    if (confirmacion == 's' or confirmacion == 'S'):
+        datos.remove(nDispositivo)
+    else:
+        print(f'ELIMINACION CANCELADA!')
+    print(f'')
+    print(f'')
+        
+    return datos
     
-
-
-
-
-
-
 def borrarPantalla(): #Funcion para limpiar pantalla detectando SO
     if os.name == "posix":
         os.system ("clear")
     elif os.name == "ce" or os.name == "nt" or os.name == "dos":
         os.system ("cls")
-
 
 def menu():
     print(f'')
@@ -154,8 +162,8 @@ def menu():
             listarDispositivos(datos)
         elif (operacion == 'U'):
             datos = actualizarDispositivo(datos)
-
-
+        elif (operacion == 'D'):
+            datos = eliminarDispositivo(datos)
 
 #MAIN ------------------------------------------------------------------------------------------------
 
