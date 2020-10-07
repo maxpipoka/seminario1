@@ -70,7 +70,7 @@ class Dispositivos:
     def getEstado(self):
         return self.estado
 
-    def setValorHumedad(self, humedad)
+    def setValorHumedad(self, humedad):
         self.valorHumedad = humedad
 
 def altaDispositivo(datos): #Para el alta de un nuevo dispositivo
@@ -85,16 +85,11 @@ def altaDispositivo(datos): #Para el alta de un nuevo dispositivo
         longT = input(f'Ingrese la longitud de ubicacion: ')
         estadoADT = input(f'Ingrese el estado del dispositivo [A] Activo / Deshabilitado [D]: ').upper()
         
-        while (estadoADT == 'A' or estadoADT == 'D'):
-            if (estadoADT == 'A'):
-                estadoT = 'ACTIVO'
-            elif (estadoADT == 'D'):
-                estadoT == 'DESHABILITADO'
-        else:
-            estadoADT = input(f'Opcion invalida! Ingrese el estado del dispositivo [A] Activo / Deshabilitado [D]: ').upper()
-        
+        if (estadoADT == 'A'):
+            estadoT = 'ACTIVO'
+        elif (estadoADT == 'D'):
+            estadoT = 'DESHABILITADO'
         ubicacionT = F'{latT},{longT}'
-
         nDispositivo = Dispositivos(idd=iddT, descripcion=descT, zonaDespliegue=zonaDesT, ubicacion=ubicacionT, valorHumedad='', estado=estadoT)
         datos.append(nDispositivo)
         carga = input(f'///// Desea dar de alta otro dispositivo? S/N: ').upper()
@@ -110,7 +105,7 @@ def listarDispositivos(datos):
     print(f'')
     print(f'/// Listado de dispositivos registrados----------')
     for nDispositivo in datos:
-        print(f'#{i}: Id Disp.: #{nDispositivo.getId()} - Descr.: {nDispositivo.getDescripcion()} - Zona: {nDispositivo.getZonaDespliegue()} - Ub: {nDispositivo.getUbicacion()} - Estado: {nDispositivo.getEstado()}')
+        print(f'#{i}: Id Disp.: {nDispositivo.getId()} - Descr.: {nDispositivo.getDescripcion()} - Zona: {nDispositivo.getZonaDespliegue()} - Ub: {nDispositivo.getUbicacion()} - Val.Hum: {nDispositivo.getValorHumedad()} - Estado: {nDispositivo.getEstado()}')
         i += 1
     print(f'')
     print(f'')
@@ -161,12 +156,16 @@ def establecerHumedad(datos):
     print(f'/// Establecer valores de humedad----------')
     print(f'// Listando sensores ACTIVOS---------------')
     for nDispositivo in datos:
-        if (nDispositivo.getEstado() == 'AVTIVO'):
-            print(f'#{i}: Id Disp.: #{nDispositivo.getId()} - Descr.: {nDispositivo.getDescripcion()} - Zona: {nDispositivo.getZonaDespliegue()} - Ub: {nDispositivo.getUbicacion()} - Estado: {nDispositivo.getEstado()}')
+        if (nDispositivo.getEstado() == 'ACTIVO'):
+            print(f'#{i}: Id Disp.: {nDispositivo.getId()} - Descr.: {nDispositivo.getDescripcion()} - Zona: {nDispositivo.getZonaDespliegue()} - Ub: {nDispositivo.getUbicacion()} - Val.Hum: {nDispositivo.getValorHumedad()} - Estado: {nDispositivo.getEstado()}')
         i += 1
-
-
-
+    aTocar = int(input(f'Ingrese el # del sensor a modificar: '))
+    humedadT = float(input(f'#### Ingrese el valor de HUMEDAD PARA EL SENSOR {aTocar}: '))
+    datos[aTocar].setValorHumedad(humedadT)
+    listarDispositivos(datos)
+    print(f'// DATOS ACTUALIZADOS')
+    print(f'')
+    print(f'')
     return datos
 
 def borrarPantalla(): #Funcion para limpiar pantalla detectando SO
@@ -179,6 +178,12 @@ def menu():
     print(f'')
     print(f'')
     datos = []
+    nDispositivo = Dispositivos(idd=1, descripcion='EL PRIMERO', zonaDespliegue='A1', ubicacion='45,65', valorHumedad='', estado='ACTIVO')
+    datos.append(nDispositivo)
+    nDispositivo = Dispositivos(idd=2, descripcion='EL SEGUNDO', zonaDespliegue='A2', ubicacion='65,78', valorHumedad='', estado='ACTIVO')
+    datos.append(nDispositivo)
+    nDispositivo = Dispositivos(idd=3, descripcion='EL TERCERO', zonaDespliegue='A3', ubicacion='12,35', valorHumedad='', estado='DESHABILITADO')
+    datos.append(nDispositivo)
     operacion = 'M'
     while (operacion != 'X'):
         print(f'// GESTION DE DISPOSITIVOS IOT ----------')
