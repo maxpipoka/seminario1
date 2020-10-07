@@ -1,0 +1,34 @@
+'''
+El INYM desea generar una solución que permita modernizar el monitoreo de plantaciones de sus productores
+asociados. Para ello, se desea implementar un sistema de monitoreo con dispositivos de tipo IoT. El sistema
+se compone de un conjunto de ?dispositivos de los cuales se conocen su ID, descripción, zona de despliegue
+(un valor alfanumérico) y ubicación (formada por las coordenadas de latitud y longitud). Cada dispositivo
+tiene un conjunto de tipo de ?sensores asociados, de cada sensor se tiene un ID, una descripción y una unidad 
+de medida. El sistema debe llevar un registro de los ?valores obtenidos por los sensores, para ello se desea 
+almacenar los datos de que tipo de sensor realizó la lectura, en qué fecha y hora y el valor sensado. Se debe
+considerar que todo dispositivo pertenece a una ?organización?, de la cual se conoce su CUIT y razón social.
+
+Consigna: Tomando en cuenta los contenidos vistos en este ciclo de tutorías se deberá realizar lo siguiente:
+
+? Desarrollar un CRUD para gestionar los datos de los ?dispositivos mencionados en el escenario anterior.
+Adaptar los datos para que cada dispositivo incorpore un sensor de humedad asociado (?como atributo deberá
+registrar el valor de humedad detectado, un % de 0 a 100?) y ?si se encuentra operativo o no (?a través de un
+campo de estado?). Los demás objetos del escenario ?no deben ser implementados?. Ver ?figura 1 para un diagrama 
+de la clase a implementar.
+
+? Algunas ?características? del aplicativo a desarrollar se mencionan a continuación:
+    ? Deberán estar implementadas las ?operaciones de carga, impresión, modificación y eliminación de 
+    dispositivos (incluyendo los campos nuevos del punto anterior).
+    ? Deberá contar con un ?menú? para su operatoria mediante la consola / terminal.
+    ? Los datos de los diferentes dispositivos podrán ser almacenados en cualquier estructura de datos según 
+    se considere oportuno.
+    ? Deberá contar con una clase ?Dispositivos a modo de diseño de los datos con los que se va a trabajar.
+    ? La clase Dispositivos deberá integrar los ?getters para todos los atributos de la misma. Además de una 
+    implementación del método ?__str__() para poder imprimir por la salida estándar a cada objeto.
+    ? La aplicación deberá integrar ?dos operaciones? según el siguiente detalle:
+        ¦ Una que permita cargar los valores del sensor de humedad de cada dispositivo que se encuentre con 
+        estado activo. Para este caso deberá integrar a la clase un método ?setValorHumedad(valor)?, para ello 
+        puede tomar como ejemplo el código que se muestra en la ?figura 2?.
+        ¦ Otra operación que sobre el conjunto de dispositivos cuya valor de humedad se haya cargado en el 
+        paso anterior se pueda detectar e informar a aquellos en los que el valor de humedad censado sea 
+        inferiora un ?valor límite que deberá ser solicitado al usuario?.'''

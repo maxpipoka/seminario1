@@ -31,7 +31,12 @@ de la clase a implementar.
         puede tomar como ejemplo el código que se muestra en la ​figura 2​.
         ■ Otra operación que sobre el conjunto de dispositivos cuya valor de humedad se haya cargado en el 
         paso anterior se pueda detectar e informar a aquellos en los que el valor de humedad censado sea 
-        inferiora un ​valor límite que deberá ser solicitado al usuario​. '''
+        inferiora un ​valor límite que deberá ser solicitado al usuario​.
+        
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////// INTERPRETADOR PYTHON 3.8.3 //////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////'''
+
 
 import os
 
@@ -45,7 +50,7 @@ class Dispositivos:
         self.estado = estado
 
     def __str__(self):
-        return f'ID: {self.idd} - ZD: {self.zonaDespliegue} - Ubic.: {self.ubicacion} - H: {self.valorHumedad} - Est.: {self.estado}'
+        return f('ID: {self.idd} - ZD: {self.zonaDespliegue} - Ubic.: {self.ubicacion} - H: {self.valorHumedad} - Est.: {self.estado}')
 
     def getId(self):
         return self.idd
@@ -65,6 +70,9 @@ class Dispositivos:
     def getEstado(self):
         return self.estado
 
+    def setValorHumedad(self, humedad)
+        self.valorHumedad = humedad
+
 def altaDispositivo(datos): #Para el alta de un nuevo dispositivo
     carga = 'S'
     while (carga == 'S'):
@@ -75,16 +83,24 @@ def altaDispositivo(datos): #Para el alta de un nuevo dispositivo
         zonaDesT = input(f'Ingrese la zona de despliegue: ')
         latT = input(f'Ingrese la latitud de ubicacion: ')
         longT = input(f'Ingrese la longitud de ubicacion: ')
-        estadoT = input(f'Ingrese el estado del dispositivo [A]Activo/Deshabilitado[D]: ')
-        estadoT = estadoT.upper()
+        estadoADT = input(f'Ingrese el estado del dispositivo [A] Activo / Deshabilitado [D]: ').upper()
+        
+        while (estadoADT == 'A' or estadoADT == 'D'):
+            if (estadoADT == 'A'):
+                estadoT = 'ACTIVO'
+            elif (estadoADT == 'D'):
+                estadoT == 'DESHABILITADO'
+        else:
+            estadoADT = input(f'Opcion invalida! Ingrese el estado del dispositivo [A] Activo / Deshabilitado [D]: ').upper()
+        
         ubicacionT = F'{latT},{longT}'
 
         nDispositivo = Dispositivos(idd=iddT, descripcion=descT, zonaDespliegue=zonaDesT, ubicacion=ubicacionT, valorHumedad='', estado=estadoT)
         datos.append(nDispositivo)
-        carga = input(f'///// Desea dar de alta otro dispositivo? S/N: ')
+        carga = input(f'///// Desea dar de alta otro dispositivo? S/N: ').upper()
         print(f'')
         print(f'')
-        carga = carga.upper()
+        
     return datos
 
 def listarDispositivos(datos):
@@ -134,7 +150,25 @@ def eliminarDispositivo(datos):
     print(f'')
         
     return datos
-    
+
+''' Una que permita cargar los valores del sensor de humedad de cada dispositivo que se encuentre con 
+        estado activo. Para este caso deberá integrar a la clase un método ​setValorHumedad(valor)​, para ello 
+        puede tomar como ejemplo el código que se muestra en la ​figura 2​. '''
+
+def establecerHumedad(datos):
+    borrarPantalla()
+    i = 0
+    print(f'/// Establecer valores de humedad----------')
+    print(f'// Listando sensores ACTIVOS---------------')
+    for nDispositivo in datos:
+        if (nDispositivo.getEstado() == 'AVTIVO'):
+            print(f'#{i}: Id Disp.: #{nDispositivo.getId()} - Descr.: {nDispositivo.getDescripcion()} - Zona: {nDispositivo.getZonaDespliegue()} - Ub: {nDispositivo.getUbicacion()} - Estado: {nDispositivo.getEstado()}')
+        i += 1
+
+
+
+    return datos
+
 def borrarPantalla(): #Funcion para limpiar pantalla detectando SO
     if os.name == "posix":
         os.system ("clear")
@@ -152,6 +186,7 @@ def menu():
         print(f'// [R] Listado de dispositivos')
         print(f'// [U] Actualizacion de dispositivo')
         print(f'// [D] Borrado de dispositivo')
+        print(f'// [H] Establecer valores humedad')
         print(f'// [X] Salir')
         operacion = input(f'//// Seleccione a operación deseada: ')
         operacion = operacion.upper()
@@ -164,6 +199,8 @@ def menu():
             datos = actualizarDispositivo(datos)
         elif (operacion == 'D'):
             datos = eliminarDispositivo(datos)
+        elif (operacion == 'H'):
+            datos = establecerHumedad(datos)
 
 #MAIN ------------------------------------------------------------------------------------------------
 
