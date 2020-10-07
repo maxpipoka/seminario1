@@ -75,7 +75,8 @@ def altaDispositivo(datos): #Para el alta de un nuevo dispositivo
         zonaDesT = input(f'Ingrese la zona de despliegue: ')
         latT = input(f'Ingrese la latitud de ubicacion: ')
         longT = input(f'Ingrese la longitud de ubicacion: ')
-        estadoT = input(f'Ingrese el estado del dispositivo: ')
+        estadoT = input(f'Ingrese el estado del dispositivo [A]Activo/Deshabilitado[D]: ')
+        estadoT = estadoT.upper()
         ubicacionT = F'{latT},{longT}'
 
         nDispositivo = Dispositivos(idd=iddT, descripcion=descT, zonaDespliegue=zonaDesT, ubicacion=ubicacionT, valorHumedad='', estado=estadoT)
@@ -97,7 +98,32 @@ def listarDispositivos(datos):
     print(f'')
     print(f'')
 
+def actualizarDispositivo(datos):
+    listarDispositivos(datos)
+    print(f'')
+    print(f'')
+    print(f'/// Modificacion de dispositivo registrado----------')
+    aModificar = int(input(f'/// Seleccione el dispositivo a modificar: #'))
+    temporal = datos[aModificar]
+    iddT = temporal.getID()
+    print(f'/ Dispositivo ID: {temporal.getId()}')
+    descT = input(f'/ Ingrese la nueva descripcion: ')
+    zonaDesT = input(f'Ingrese la nueva zona de despliegue: ')
+    latT = input(f'Ingrese la nueva latitud de ubicacion: ')
+    longT = input(f'Ingrese la nueva longitud de ubicacion: ')
+    estadoT = input(f'Ingrese el nuevo estado del dispositivo [A]Activo/Deshabilitado[D]: ')
+    estadoT = estadoT.upper()
+    ubicacionT = F'{latT},{longT}'
+    nDispositivo = Dispositivos(idd=iddT, descripcion=descT, zonaDespliegue=zonaDesT, ubicacion=ubicacionT, valorHumedad='', estado=estadoT)
+    datos[aModificar] = nDispositivo
+    print(f'')
+    print(f'')
+    return datos
     
+
+
+
+
 
 
 def borrarPantalla(): #Funcion para limpiar pantalla detectando SO
@@ -126,7 +152,7 @@ def menu():
             datos = altaDispositivo(datos)
         elif (operacion == 'R'):
             listarDispositivos(datos)
-        elif (operacion == 'U')
+        elif (operacion == 'U'):
             datos = actualizarDispositivo(datos)
 
 
