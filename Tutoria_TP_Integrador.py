@@ -183,10 +183,6 @@ def establecerHumedad(datos):
     print(f'')
     return datos
 
-''' ■ Otra operación que sobre el conjunto de dispositivos cuya valor de humedad se haya cargado en el 
-        paso anterior se pueda detectar e informar a aquellos en los que el valor de humedad censado sea 
-        inferiora un ​valor límite que deberá ser solicitado al usuario​. '''
-
 def humedadInferior(datos, minimo):
     ''' Para buscar los dispositivos con valor de humedad por debajo de un minimo especificado por el usuario.
         Se listan los dispositivos que esten ACTIVOS y tengan un valor de humedad cargado.
