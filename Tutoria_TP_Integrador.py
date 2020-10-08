@@ -40,16 +40,9 @@ de la clase a implementar.
 
 import os
 
-def manejoErrorInt(texto): #Para manejo de error en caso de ingresar texto en vez de un int
-    valorIngresado = ''
-    try:
-        valorIngresado = int(input(f'{texto}'))
-    except nombreError:
-        
-    return valorIngresado
-
 
 class Dispositivos:
+    ''' Clase para almacenar los dispositivos sensores'''
     def __init__(self, idd, descripcion, zonaDespliegue, ubicacion, valorHumedad, estado):
         self.idd = idd
         self.descripcion = descripcion
@@ -82,6 +75,52 @@ class Dispositivos:
     def setValorHumedad(self, humedad):
         self.valorHumedad = humedad
 
+def manejoErrorInt(texto): #Para manejo de error en caso de ingresar texto en vez de un int
+    valorIngresado = ''
+    while True:
+        try:
+            valorIngresado = int(input(f'{texto}'))
+            break
+        except ValueError:
+            print(f'')
+            print(f'¡VALOR INGRESADO INCORRECTO! DEBE SER UN NUMERO')
+    return valorIngresado
+    
+def manejoErrorFloat(texto): #Para manejo de error en caso de ingresar texto en vez de un float o int
+    valorIngresado = ''
+    while True:
+        try:
+            valorIngresado = float(input(f'{texto}'))
+            break
+        except ValueError:
+            print(f'')
+            print(f'¡VALOR INGRESADO INCORRECTO! DEBE SER UN NUMERO O DECIMAL CON PUNTO')
+    return valorIngresado
+
+def validacionEstado(): #Valida que lo ingresado sean las letras A o D y devuelve estandarizado el valor para almacenar
+    estadoValido = ''
+    estadoT = input(f'Ingrese el estado del dispositivo [A] Activo / Deshabilitado [D]: ').upper()
+    while (estadoT != 'A' and estadoT != 'D'):
+        print(f'')
+        print(f'### ¡ OPCION INVALIDA ! ###')
+        estadoT = input(f'Ingrese el estado del dispositivo [A] Activo / Deshabilitado [D]: ').upper()
+    else:
+        if (estadoT == 'A'):
+            estadoValido = 'ACTIVO'
+        elif (estadoT == 'D'):
+            estadoValido = 'DESHABILITADO'
+    return estadoValido
+
+def validacionContinuarCarga(): #Para validar que sea solo S o N
+    continuarCarga = 'S'
+    cargaT = input(f'///// Desea dar de alta otro dispositivo? S/N: ').upper()
+    while (cargaT != 'S' and cargaT != 'N'):
+        print(f'')
+        print(f'### ¡ OPCION INVALIDA ! ###')
+        input(f'///// Desea dar de alta otro dispositivo? S/N: ').upper()
+    continuarCarga = cargaT
+    return continuarCarga
+
 def altaDispositivo(datos):
     ''' Para el alta de un dispositivo, se piden datos al usuario que se guardan en variables locales,
         luego se evalua el input sobre el ESTADO para estandarizar el texto guardado en el objeto.
@@ -98,16 +137,11 @@ def altaDispositivo(datos):
         zonaDesT = input(f'Ingrese la zona de despliegue: ')
         latT = input(f'Ingrese la latitud de ubicacion: ')
         longT = input(f'Ingrese la longitud de ubicacion: ')
-        estadoADT = input(f'Ingrese el estado del dispositivo [A] Activo / Deshabilitado [D]: ').upper()
-        
-        if (estadoADT == 'A'):
-            estadoT = 'ACTIVO'
-        elif (estadoADT == 'D'):
-            estadoT = 'DESHABILITADO'
+        estadoT = validacionEstado()
         ubicacionT = F'{latT},{longT}'
         nDispositivo = Dispositivos(idd=iddT, descripcion=descT, zonaDespliegue=zonaDesT, ubicacion=ubicacionT, valorHumedad='', estado=estadoT)
         datos.append(nDispositivo)
-        carga = input(f'///// Desea dar de alta otro dispositivo? S/N: ').upper()
+        carga = validacionContinuarCarga()
         print(f'')
         print(f'')
         
@@ -134,7 +168,7 @@ def actualizarDispositivo(datos):
 
     listarDispositivos(datos)
     print(f'/// Modificacion de dispositivo registrado----------')
-    aModificar = int(input(f'/// Seleccione el dispositivo a modificar: #'))
+    aModificar = manejoErrorInt('/// Seleccione el dispositivo a modificar: #')
     temporal = datos[aModificar]
     iddT = temporal.getId()
     print(f'/ Dispositivo ID: {temporal.getId()}')
@@ -142,8 +176,7 @@ def actualizarDispositivo(datos):
     zonaDesT = input(f'Ingrese la nueva zona de despliegue: ')
     latT = input(f'Ingrese la nueva latitud de ubicacion: ')
     longT = input(f'Ingrese la nueva longitud de ubicacion: ')
-    estadoT = input(f'Ingrese el nuevo estado del dispositivo [A]Activo/Deshabilitado[D]: ')
-    estadoT = estadoT.upper()
+    estadoT = validacionEstado()
     ubicacionT = F'{latT},{longT}'
     nDispositivo = Dispositivos(idd=iddT, descripcion=descT, zonaDespliegue=zonaDesT, ubicacion=ubicacionT, valorHumedad='', estado=estadoT)
     datos[aModificar] = nDispositivo
@@ -158,7 +191,7 @@ def eliminarDispositivo(datos):
 
     listarDispositivos(datos)
     print(f'/// Borrado de dispositivo registrado----------')
-    aEliminar = int(input(f'/// Seleccione el dispositivo a eliminar: #'))
+    aEliminar = manejoErrorInt('/// Seleccione el dispositivo a eliminar: #')
     nDispositivo = datos[aEliminar]
     confirmacion = input(f'--ATENCION! ESTA SEGURO DE BORRAR EL DISPOSITIVO #{aEliminar}? S/N ')
     if (confirmacion == 's' or confirmacion == 'S'):
@@ -184,8 +217,8 @@ def establecerHumedad(datos):
         if (nDispositivo.getEstado() == 'ACTIVO'):
             print(f'#{i}: Id Disp.: {nDispositivo.getId()} - Descr.: {nDispositivo.getDescripcion()} - Zona: {nDispositivo.getZonaDespliegue()} - Ub: {nDispositivo.getUbicacion()} - Val.Hum: {nDispositivo.getValorHumedad()} - Estado: {nDispositivo.getEstado()}')
         i += 1
-    aTocar = int(input(f'Ingrese el # del sensor a modificar: '))
-    humedadT = float(input(f'#### Ingrese el valor de HUMEDAD PARA EL SENSOR {aTocar}: '))
+    aTocar = manejoErrorInt('Ingrese el # del sensor a modificar: ')
+    humedadT = manejoErrorFloat('#### Ingrese el valor de HUMEDAD PARA EL SENSOR: ')
     datos[aTocar].setValorHumedad(humedadT)
     listarDispositivos(datos)
     print(f'// DATOS ACTUALIZADOS')
