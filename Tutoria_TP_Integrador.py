@@ -40,6 +40,15 @@ de la clase a implementar.
 
 import os
 
+def manejoErrorInt(texto): #Para manejo de error en caso de ingresar texto en vez de un int
+    valorIngresado = ''
+    try:
+        valorIngresado = int(input(f'{texto}'))
+    except nombreError:
+        
+    return valorIngresado
+
+
 class Dispositivos:
     def __init__(self, idd, descripcion, zonaDespliegue, ubicacion, valorHumedad, estado):
         self.idd = idd
@@ -83,7 +92,8 @@ def altaDispositivo(datos):
     while (carga == 'S'): #Se va a loopear la carga hasta que el usuario ponga en N la condicion.
         borrarPantalla()
         print(f'// Alta de nuevo dispositivo----------')
-        iddT = int(input(f'Ingrese el ID: #'))
+        iddT = manejoErrorInt('Ingrese el ID: #')
+        #iddT = int(input(f'Ingrese el ID: #'))
         descT = input(f'Ingrese la descripcion: ')
         zonaDesT = input(f'Ingrese la zona de despliegue: ')
         latT = input(f'Ingrese la latitud de ubicacion: ')
