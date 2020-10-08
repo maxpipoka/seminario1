@@ -228,11 +228,25 @@ def borrarPantalla(): #Funcion para limpiar pantalla detectando SO
     elif os.name == "ce" or os.name == "nt" or os.name == "dos":
         os.system ("cls")
 
+def menuPrincipal():
+    operacion = ''
+    print(f'// GESTION DE DISPOSITIVOS IOT ----------')
+    print(f'// [C] Alta de dispositivo')
+    print(f'// [R] Listado de dispositivos')
+    print(f'// [U] Actualizacion de dispositivo')
+    print(f'// [D] Borrado de dispositivo')
+    print(f'// [H] Establecer valores humedad')
+    print(f'// [I] Buscar dispositivos bajo el minimo de humedad')
+    print(f'// [X] Salir')
+    operacion = input(f'//// Seleccione a operación deseada: ').upper()
+    return operacion
+    
 def menu():
     print(f'')
     print(f'')
     datos = []
     # 3 registros pre cargados para testeo sin tener que cargarlos cada vez que se ejecuta el programa
+
     nDispositivo = Dispositivos(idd=1, descripcion='EL PRIMERO', zonaDespliegue='A1', ubicacion='45,65', valorHumedad='', estado='ACTIVO')
     datos.append(nDispositivo)
     nDispositivo = Dispositivos(idd=2, descripcion='EL SEGUNDO', zonaDespliegue='A2', ubicacion='65,78', valorHumedad='', estado='ACTIVO')
@@ -242,30 +256,28 @@ def menu():
 
     operacion = 'M'
     while (operacion != 'X'):
-        print(f'// GESTION DE DISPOSITIVOS IOT ----------')
-        print(f'// [C] Alta de dispositivo')
-        print(f'// [R] Listado de dispositivos')
-        print(f'// [U] Actualizacion de dispositivo')
-        print(f'// [D] Borrado de dispositivo')
-        print(f'// [H] Establecer valores humedad')
-        print(f'// [I] Buscar dispositivos bajo el minimo de humedad')
-        print(f'// [X] Salir')
-        operacion = input(f'//// Seleccione a operación deseada: ')
-        operacion = operacion.upper()
-        
-        if (operacion == 'C'):
-            datos = altaDispositivo(datos)
-        elif (operacion == 'R'):
-            listarDispositivos(datos)
-        elif (operacion == 'U'):
-            datos = actualizarDispositivo(datos)
-        elif (operacion == 'D'):
-            datos = eliminarDispositivo(datos)
-        elif (operacion == 'H'):
-            datos = establecerHumedad(datos)
-        elif (operacion == 'I'):
-            minimo = ingresarMinimoTemperatura()
-            humedadInferior(datos, minimo)
+        operacion = menuPrincipal()        
+
+        #CONTROL INGRESO DEL USUARIO
+        while (operacion != 'C' and operacion != 'R' and operacion != 'U' and operacion != 'D' and operacion != 'H' and operacion != 'I' and operacion != 'X'):
+            print(f'')
+            print(f'### ¡ OPCION INVALIDA ! ###')
+            print(f'')
+            operacion = menuPrincipal()
+        else:
+            if (operacion == 'C'):
+                datos = altaDispositivo(datos)
+            elif (operacion == 'R'):
+                listarDispositivos(datos)
+            elif (operacion == 'U'):
+                datos = actualizarDispositivo(datos)
+            elif (operacion == 'D'):
+                datos = eliminarDispositivo(datos)
+            elif (operacion == 'H'):
+                datos = establecerHumedad(datos)
+            elif (operacion == 'I'):
+                minimo = ingresarMinimoTemperatura()
+                humedadInferior(datos, minimo)
 
 
 #MAIN ------------------------------------------------------------------------------------------------
