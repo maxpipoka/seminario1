@@ -259,10 +259,10 @@ def ingresarMinimoTemperatura():
         permitido'''
     borrarPantalla()
     print(f' ###### BUSQUEDA DE DISPOSITIVOS BAJO VALOR DE HUMEDAD MINIMO')
-    minimo = float(input(f' ### Ingrese el valor de temperatura mínimo a buscar en los dispositivos, 0-100: '))
+    minimo = manejoErrorFloat(' ### Ingrese el valor de temperatura mínimo a buscar en los dispositivos, 0-100: ')
     while (minimo < 0 or minimo > 100):
         print(f' ¡¡¡ VALOR INGRESADO INCORRECTO !!! ')
-        minimo = float(input(f' ### Ingrese el valor de temperatura mínimo a buscar en los dispositivos, 0-100: '))
+        minimo = manejoErrorFloat(' ### Ingrese el valor de temperatura mínimo a buscar en los dispositivos, 0-100: ')
     return minimo
 
 def borrarPantalla(): #Funcion para limpiar pantalla detectando SO
