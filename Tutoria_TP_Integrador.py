@@ -188,11 +188,43 @@ def establecerHumedad(datos):
         inferiora un ​valor límite que deberá ser solicitado al usuario​. '''
 
 def humedadInferior(datos, minimo):
+    ''' Para buscar los dispositivos con valor de humedad por debajo de un minimo especificado por el usuario.
+        Se listan los dispositivos que esten ACTIVOS y tengan un valor de humedad cargado.
+        antes de invocar esta funcion se invoca otra donde se le pide el valor minimo al usuario
+        Se itera la lista con los objetos, con las condiciones que el estado sea ACTIVO, 
+        el valor de humedad no sea vacio, y el valor de humedad este por debajo del minimo especificado.
+        En caso de cumplir la condicion se imprime en pantalla el objeto encontrado.
+        Tambien hay una variable cumplenCondicion local que va contando si se encuentran dispositivos
+        que cumplan con los criterios, en caso de no encontrar ninguno se evalua para mostrar un mensaje
+        en pantalla.'''
+
     borrarPantalla()
     print(f'/// Dispositivos bajo el minimo de humedad----------')
     print(f'// Listando sensores---------------')
-    
+    cumplenCondicion = 0 # contador de dispositivos que cumplen con la condicion de estar activo y tener un valor de humedad cargado
+    print(f'// VALOR MINIMO DE HUMEDAD: {minimo}')
+    print(f'')
+    for nDispositivo in datos:
+        if (nDispositivo.getEstado() == 'ACTIVO' and nDispositivo.getValorHumedad() != '' and nDispositivo.getValorHumedad() < minimo):
+            print(f'# Id Disp.: {nDispositivo.getId()} - Descr.: {nDispositivo.getDescripcion()} - Zona: {nDispositivo.getZonaDespliegue()} - Ub: {nDispositivo.getUbicacion()} - Val.Hum: {nDispositivo.getValorHumedad()} - Estado: {nDispositivo.getEstado()}')
+            cumplenCondicion += 1
+    if (cumplenCondicion == 0):
+        print(f' ###### NO SE ENCONTRARON DISPOSITIVOS CON VALORES #####')
+        print(f' ######      POR DEBAJO DEL MINIMO ESPECIFICADO    #####')
+    print(f'')
+    print(f'')
 
+def ingresarMinimoTemperatura():
+    ''' Solicita al usuario ingrese el dato para buscar como valor minimo de humedad
+        y realiza el control de que el ingresado no este por debajo y encima de lo 
+        permitido'''
+    borrarPantalla()
+    print(f' ###### BUSQUEDA DE DISPOSITIVOS BAJO VALOR DE HUMEDAD MINIMO')
+    minimo = float(input(f' ### Ingrese el valor de temperatura mínimo a buscar en los dispositivos, 0-100: '))
+    while (minimo < 0 or minimo > 100):
+        print(f' ¡¡¡ VALOR INGRESADO INCORRECTO !!! ')
+        minimo = float(input(f' ### Ingrese el valor de temperatura mínimo a buscar en los dispositivos, 0-100: '))
+    return minimo
 
 def borrarPantalla(): #Funcion para limpiar pantalla detectando SO
     if os.name == "posix":
@@ -204,12 +236,14 @@ def menu():
     print(f'')
     print(f'')
     datos = []
+    # 3 registros pre cargados para testeo sin tener que cargarlos cada vez que se ejecuta el programa
     nDispositivo = Dispositivos(idd=1, descripcion='EL PRIMERO', zonaDespliegue='A1', ubicacion='45,65', valorHumedad='', estado='ACTIVO')
     datos.append(nDispositivo)
     nDispositivo = Dispositivos(idd=2, descripcion='EL SEGUNDO', zonaDespliegue='A2', ubicacion='65,78', valorHumedad='', estado='ACTIVO')
     datos.append(nDispositivo)
     nDispositivo = Dispositivos(idd=3, descripcion='EL TERCERO', zonaDespliegue='A3', ubicacion='12,35', valorHumedad='', estado='DESHABILITADO')
     datos.append(nDispositivo)
+
     operacion = 'M'
     while (operacion != 'X'):
         print(f'// GESTION DE DISPOSITIVOS IOT ----------')
@@ -234,7 +268,9 @@ def menu():
         elif (operacion == 'H'):
             datos = establecerHumedad(datos)
         elif (operacion == 'I'):
+            minimo = ingresarMinimoTemperatura()
             humedadInferior(datos, minimo)
+
 
 #MAIN ------------------------------------------------------------------------------------------------
 
