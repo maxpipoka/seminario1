@@ -73,9 +73,14 @@ class Dispositivos:
     def setValorHumedad(self, humedad):
         self.valorHumedad = humedad
 
-def altaDispositivo(datos): #Para el alta de un nuevo dispositivo
+def altaDispositivo(datos):
+    ''' Para el alta de un dispositivo, se piden datos al usuario que se guardan en variables locales,
+        luego se evalua el input sobre el ESTADO para estandarizar el texto guardado en el objeto.
+        Finalmente se guarda en una instancia de la clase y se mete dentro de la lista que va guardando
+        todos los objetos y se devuelve al menu principal''' 
+
     carga = 'S'
-    while (carga == 'S'):
+    while (carga == 'S'): #Se va a loopear la carga hasta que el usuario ponga en N la condicion.
         borrarPantalla()
         print(f'// Alta de nuevo dispositivo----------')
         iddT = int(input(f'Ingrese el ID: #'))
@@ -99,6 +104,8 @@ def altaDispositivo(datos): #Para el alta de un nuevo dispositivo
     return datos
 
 def listarDispositivos(datos):
+    ''' Listado de los registros cargados, se recorre la lista plasmando en pantalla los atributos del objeto
+        en cada iteracion. No realiza ninguna modificacion sobre la lista recibida'''
     borrarPantalla()
     i= 0
     print(f'')
@@ -111,6 +118,10 @@ def listarDispositivos(datos):
     print(f'')
 
 def actualizarDispositivo(datos):
+    ''' Primero se llama al listado de registros, se le pide al usuario especifique que registro se va a modificar.
+        Se le pide al usuario los campos que se guardan en variables locales, se instancia la clase, y se actualiza
+        el registro en la lista con la nueva instancia. Finalmente se lista como quedó y se devuelve al menú'''
+
     listarDispositivos(datos)
     print(f'/// Modificacion de dispositivo registrado----------')
     aModificar = int(input(f'/// Seleccione el dispositivo a modificar: #'))
@@ -132,6 +143,9 @@ def actualizarDispositivo(datos):
     return datos
 
 def eliminarDispositivo(datos):
+    ''' Para eliminar un registro de la lista de datos, se listan los cargados, se le pide al usuario cual se elimina
+        se evalua la respuesta de confimacion y se remueve de la lista el registro consignado. Se devuelve al menu el final'''
+
     listarDispositivos(datos)
     print(f'/// Borrado de dispositivo registrado----------')
     aEliminar = int(input(f'/// Seleccione el dispositivo a eliminar: #'))
@@ -146,11 +160,12 @@ def eliminarDispositivo(datos):
         
     return datos
 
-''' Una que permita cargar los valores del sensor de humedad de cada dispositivo que se encuentre con 
-        estado activo. Para este caso deberá integrar a la clase un método ​setValorHumedad(valor)​, para ello 
-        puede tomar como ejemplo el código que se muestra en la ​figura 2​. '''
-
 def establecerHumedad(datos):
+    ''' Para cargar el valor de la humedad a cada instancia de la clase almacenada. Se listan los registros de la lista
+        filtrandolos por el metodo get.Estado == ACTIVO, se le pide al usuario elija cual se modificara
+        se pide el valor, y se actualiza el objeto seleccionado mediante el metodo setValorHumedad.
+        Se lista el resultado y se devuelve la lista final al menú principal'''
+
     borrarPantalla()
     i = 0
     print(f'/// Establecer valores de humedad----------')
@@ -167,6 +182,17 @@ def establecerHumedad(datos):
     print(f'')
     print(f'')
     return datos
+
+''' ■ Otra operación que sobre el conjunto de dispositivos cuya valor de humedad se haya cargado en el 
+        paso anterior se pueda detectar e informar a aquellos en los que el valor de humedad censado sea 
+        inferiora un ​valor límite que deberá ser solicitado al usuario​. '''
+
+def humedadInferior(datos, minimo):
+    borrarPantalla()
+    print(f'/// Dispositivos bajo el minimo de humedad----------')
+    print(f'// Listando sensores---------------')
+    
+
 
 def borrarPantalla(): #Funcion para limpiar pantalla detectando SO
     if os.name == "posix":
@@ -192,6 +218,7 @@ def menu():
         print(f'// [U] Actualizacion de dispositivo')
         print(f'// [D] Borrado de dispositivo')
         print(f'// [H] Establecer valores humedad')
+        print(f'// [I] Buscar dispositivos bajo el minimo de humedad')
         print(f'// [X] Salir')
         operacion = input(f'//// Seleccione a operación deseada: ')
         operacion = operacion.upper()
@@ -206,6 +233,8 @@ def menu():
             datos = eliminarDispositivo(datos)
         elif (operacion == 'H'):
             datos = establecerHumedad(datos)
+        elif (operacion == 'I'):
+            humedadInferior(datos, minimo)
 
 #MAIN ------------------------------------------------------------------------------------------------
 
