@@ -117,7 +117,7 @@ def validacionContinuarCarga(): #Para validar que sea solo S o N
     while (cargaT != 'S' and cargaT != 'N'):
         print(f'')
         print(f'### ¡ OPCION INVALIDA ! ###')
-        input(f'///// Desea dar de alta otro dispositivo? S/N: ').upper()
+        cargaT = input(f'///// Desea dar de alta otro dispositivo? S/N: ').upper()
     continuarCarga = cargaT
     return continuarCarga
 
