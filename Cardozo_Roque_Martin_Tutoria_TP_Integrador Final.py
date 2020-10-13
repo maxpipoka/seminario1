@@ -52,7 +52,7 @@ class Dispositivos:
         self.estado = estado
 
     def __str__(self):
-        return f'ID: {self.idd} - DESC. : {self.descripcion} - D: {self.zonaDespliegue} - Ubic.: {self.ubicacion} - H: {self.valorHumedad} - Est.: {self.estado}'
+        return f('ID: {self.idd} - ZD: {self.zonaDespliegue} - Ubic.: {self.ubicacion} - H: {self.valorHumedad} - Est.: {self.estado}')
 
     def getId(self):
         return self.idd
@@ -131,15 +131,15 @@ def altaDispositivo(datos):
     while (carga == 'S'): #Se va a loopear la carga hasta que el usuario ponga en N la condicion.
         borrarPantalla()
         print(f'// Alta de nuevo dispositivo----------')
-        iddTemporal = manejoErrorInt('Ingrese el ID: #')
+        iddT = manejoErrorInt('Ingrese el ID: #')
         #iddT = int(input(f'Ingrese el ID: #'))
-        descTemporal = input(f'Ingrese la descripcion: ')
-        zonaDesTemporal = input(f'Ingrese la zona de despliegue: ')
-        latTemporal = input(f'Ingrese la latitud de ubicacion: ')
-        longTemporal = input(f'Ingrese la longitud de ubicacion: ')
-        estadoTemporal = validacionEstado()
-        ubicacionTemporal = F'{larTemporal},{longTemporal}'
-        nDispositivo = Dispositivos(idd=iddTemporal, descripcion=descTemporal, zonaDespliegue=zonaDesTemporal, ubicacion=ubicacionTemporal, valorHumedad='', estado=estadoTemporal)
+        descT = input(f'Ingrese la descripcion: ')
+        zonaDesT = input(f'Ingrese la zona de despliegue: ')
+        latT = input(f'Ingrese la latitud de ubicacion: ')
+        longT = input(f'Ingrese la longitud de ubicacion: ')
+        estadoT = validacionEstado()
+        ubicacionT = F'{latT},{longT}'
+        nDispositivo = Dispositivos(idd=iddT, descripcion=descT, zonaDespliegue=zonaDesT, ubicacion=ubicacionT, valorHumedad='', estado=estadoT)
         datos.append(nDispositivo)
         carga = validacionContinuarCarga()
         print(f'')
@@ -156,8 +156,7 @@ def listarDispositivos(datos):
     print(f'')
     print(f'/// Listado de dispositivos registrados----------')
     for nDispositivo in datos:
-        print(f'#{i}: {nDispositivo}')
-
+        print(f'#{i}: Id Disp.: {nDispositivo.getId()} - Descr.: {nDispositivo.getDescripcion()} - Zona: {nDispositivo.getZonaDespliegue()} - Ub: {nDispositivo.getUbicacion()} - Val.Hum: {nDispositivo.getValorHumedad()} - Estado: {nDispositivo.getEstado()}')
         i += 1
     print(f'')
     print(f'')
@@ -171,15 +170,15 @@ def actualizarDispositivo(datos):
     print(f'/// Modificacion de dispositivo registrado----------')
     aModificar = manejoErrorInt('/// Seleccione el dispositivo a modificar: #')
     temporal = datos[aModificar]
-    iddTemporal = temporal.getId()
+    iddT = temporal.getId()
     print(f'/ Dispositivo ID: {temporal.getId()}')
-    descTemporal = input(f'/ Ingrese la nueva descripcion: ')
-    zonaDesTemporal = input(f'Ingrese la nueva zona de despliegue: ')
-    latTemporal = input(f'Ingrese la nueva latitud de ubicacion: ')
-    longTemporal = input(f'Ingrese la nueva longitud de ubicacion: ')
-    estadoTemporal = validacionEstado()
-    ubicacionTemporal = F'{latTemporal},{longTemporal}'
-    nDispositivo = Dispositivos(idd=iddTemporal, descripcion=descTemporal, zonaDespliegue=zonaDesTemporal, ubicacion=ubicacionTemporal, valorHumedad='', estado=estadoTemporal)
+    descT = input(f'/ Ingrese la nueva descripcion: ')
+    zonaDesT = input(f'Ingrese la nueva zona de despliegue: ')
+    latT = input(f'Ingrese la nueva latitud de ubicacion: ')
+    longT = input(f'Ingrese la nueva longitud de ubicacion: ')
+    estadoT = validacionEstado()
+    ubicacionT = F'{latT},{longT}'
+    nDispositivo = Dispositivos(idd=iddT, descripcion=descT, zonaDespliegue=zonaDesT, ubicacion=ubicacionT, valorHumedad='', estado=estadoT)
     datos[aModificar] = nDispositivo
     listarDispositivos(datos)
     print(f'')
@@ -216,11 +215,11 @@ def establecerHumedad(datos):
     print(f'// Listando sensores ACTIVOS---------------')
     for nDispositivo in datos:
         if (nDispositivo.getEstado() == 'ACTIVO'):
-            print(f'#{i}: {nDispositivo}')
+            print(f'#{i}: Id Disp.: {nDispositivo.getId()} - Descr.: {nDispositivo.getDescripcion()} - Zona: {nDispositivo.getZonaDespliegue()} - Ub: {nDispositivo.getUbicacion()} - Val.Hum: {nDispositivo.getValorHumedad()} - Estado: {nDispositivo.getEstado()}')
         i += 1
     aTocar = manejoErrorInt('Ingrese el # del sensor a modificar: ')
-    humedadTemporal = controlIngresoTemperatura('establecer', '', 'Ingrese el valor de HUMEDAD PARA EL SENSOR: ')
-    datos[aTocar].setValorHumedad(humedadTemporal)
+    humedadT = manejoErrorFloat('#### Ingrese el valor de HUMEDAD PARA EL SENSOR: ')
+    datos[aTocar].setValorHumedad(humedadT)
     listarDispositivos(datos)
     print(f'// DATOS ACTUALIZADOS')
     print(f'')
@@ -254,16 +253,17 @@ def humedadInferior(datos, minimo):
     print(f'')
     print(f'')
 
-def controlIngresoTemperatura(funcion, titulo, texto):
-    ''' Para el control del ingreso en cuanto se carga los valores de temperatura'''
-    if (funcion == 'minimo'):
-        borrarPantalla()
-        print(f' ###### {titulo}')
-    valor = manejoErrorFloat(f' ### {texto}')
-    while (valor < 0 or valor > 100):
-        print(f' ¡¡¡ VALOR INGRESADO INCORRECTO !!!')
-        valor = manejoErrorFloat(f' ### {texto}')
-    return valor
+def ingresarMinimoTemperatura():
+    ''' Solicita al usuario ingrese el dato para buscar como valor minimo de humedad
+        y realiza el control de que el ingresado no este por debajo y encima de lo 
+        permitido'''
+    borrarPantalla()
+    print(f' ###### BUSQUEDA DE DISPOSITIVOS BAJO VALOR DE HUMEDAD MINIMO')
+    minimo = manejoErrorFloat(' ### Ingrese el valor de temperatura mínimo a buscar en los dispositivos, 0-100: ')
+    while (minimo < 0 or minimo > 100):
+        print(f' ¡¡¡ VALOR INGRESADO INCORRECTO !!! ')
+        minimo = manejoErrorFloat(' ### Ingrese el valor de temperatura mínimo a buscar en los dispositivos, 0-100: ')
+    return minimo
 
 def borrarPantalla(): #Funcion para limpiar pantalla detectando SO
     if os.name == "posix":
@@ -319,8 +319,7 @@ def menu():
             elif (operacion == 'H'):
                 datos = establecerHumedad(datos)
             elif (operacion == 'I'):
-                #minimo = ingresarMinimoTemperatura()
-                minimo = controlIngresoTemperatura('minimo','BUSQUEDA DE DISPOSITIVOS BAJO VALOR DE HUMEDAD MINIMO', 'Ingrese el valor de temperatura mínimo a buscar en los dispositivos, 0-100: ')
+                minimo = ingresarMinimoTemperatura()
                 humedadInferior(datos, minimo)
 
 
